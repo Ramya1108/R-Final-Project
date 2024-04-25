@@ -1,0 +1,73 @@
+# DNA/RNA Sequence Motif Prediction
+
+This R script defines a class for representing DNA/RNA sequences and a method for predicting motifs within these sequences.
+
+## Usage
+
+### Class Definition
+
+The class `dna_rna_sequence` is defined to represent DNA/RNA sequences. It can be instantiated by passing a sequence string as an argument.
+
+```r
+dna_rna_sequence <- function(sequence) {
+  class(sequence) <- "dna_rna_sequence"
+  return(sequence)
+}
+```
+## Motif Prediction
+The predictMotif function predicts the positions of a given motif within a DNA/RNA sequence. It converts both the sequence and the motif to uppercase to ensure case insensitivity. If the motif is found within the sequence, it prints the positions where the motif occurs. If not found, it prints a message indicating that the motif was not found.
+
+```r
+predictMotif <- function(sequence, motif) {
+  # Convert both sequence and motif to uppercase
+  sequence <- toupper(sequence)
+  motif <- toupper(motif)
+  
+  # Find motif positions in the sequence
+  positions <- gregexpr(motif, sequence, ignore.case = TRUE)[[1]]
+  
+  if (length(positions) == 0) {
+    print("Motif not found in the sequence.")
+  } else {
+    # Print positions of the motif in the sequence
+    print(paste("Motif found at positions:", positions))
+  }
+}
+```
+##Method Dispatch
+To enable method dispatch for the predictMotif function based on the class of the sequence object, a specific method predictMotif.dna_rna_sequence is defined. This method dispatches to the general predictMotif function.
+
+```r
+predictMotif.dna_rna_sequence <- function(sequence, motif) {
+  predictMotif(sequence, motif)
+}
+```
+
+##Example
+The script demonstrates the usage of the defined class and method by creating DNA and RNA sequences, defining motifs, and predicting motifs within these sequences.
+##Create DNA/RNA sequences
+
+```r
+dna_sequence <- dna_rna_sequence("ATGCGATCGATCGTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCT")
+rna_sequence <- dna_rna_sequence("AUCGUAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGA")
+```
+
+
+##Define motif
+
+```r
+motif_1 <- "ATCG"
+motif_2 <- "AUC"
+```
+
+##Predict motif in DNA sequence
+
+```r
+predictMotif(dna_sequence, motif_1)
+```
+
+##Predict motif in RNA sequence
+
+```r
+predictMotif(rna_sequence, motif_2)
+```
